@@ -1,0 +1,243 @@
+<html>
+
+<head>
+	<title>Learn with Note-Taking</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<meta charset="utf-8" />
+</head>
+
+<body>
+	<nav class="navbar" style="background-color: #17a2b8; color:white">
+		<span class="navbar-brand mb-0 h1">NoteStruct</span>
+		<span class='col align-items-end' id='workerid' style="float:right"> </span>
+	</nav>
+	<div class="container">
+		<div class="card mb-3">
+			<div class="card-header">
+				Watch lecture video and annotate on the transcript
+			</div>
+			<div class="card-body">
+				<!-- <h5 class="card-title">Special title treatment</h5> -->
+				<p class="card-text">While you are watching the video, look at the time-anchored transcript that is
+					being shown on the side, and take notes by annotating on the transcript. You may (1) <span
+						class="highlight-text">highlight</span> on what
+					you think are the important points, (2) <span class="highlight-question">question</span> on points
+					that you think are confusing, or (3) <span class="highlight-notes">comment</span>
+					on the transcript to capture your immediate thoughts in short. </p>
+				<p class="card-text"> Note: If no transcript appear on the right
+					side of the video, please refresh your browser. </p>
+			</div>
+		</div>
+		<div class="alert alert-warning fade show" style="display: none;" id="alertpop">
+			<!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
+			<strong>Warning!</strong> Before stepping forward, please make sure that you have made highlight/note/question
+			on
+			the transcript.
+		</div>
+		<div class="row">
+			<div class="col">
+				<h3 id="course-title">
+				</h3>
+			</div>
+		</div>
+		<div class='row'>
+			<div class="col-8">
+				<div class="video-wrapper">
+					<video id="video" class="video-element" crossorigin:*> Your browser doesn't support the video
+						tag.</video>
+
+					<div class="video-controls container-fluid">
+						<div class='row justify-content-center'>
+							<div class="col-md-auto">
+								<button class="btn btn-backward"><span class="fa fa-backward"></span></button>
+								<button class="btn btn-play"><span class="fa fa-play"></span></button>
+								<button class="btn btn-forward"><span class="fa fa-forward"></span></button>
+								<button class="btn btn-stop"><span class="fa fa-stop"></span></button>
+								<button class="btn btn-reset" hidden><span class="fa fa-undo"></span></button>
+								<button class="btn btn-mute"><span class="fa fa-volume-off"></span></button>
+								<!-- <button class="btn btn-expand"><span class="fa fa-expand"></span></button> -->
+							</div>
+							<!-- <div class="col-md-auto">
+								<button class="btn btn-highlight" title="hover text"><span class="fas fa-lightbulb"></span></button>
+								<button class="btn btn-note"><span class="fas fa-pencil-alt"></span></button>
+								<button class="btn btn-question"><span class="fas fa-question"></span></button>
+							</div> -->
+						</div>
+					</div>
+
+					<div class="progress" style="height: 23px; cursor: pointer;">
+						<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+							aria-valuemax="100"></div>
+					</div>
+				</div>
+				<div class="note-marker">
+					<div class="template note-marker-fill highlight"></div>
+					<div class="template note-marker-fill note"></div>
+					<div class="template note-marker-fill question"></div>
+				</div>
+				<button class="btn btn-info mt-4" id='next-course'>Generate my notes>></button>
+			</div>
+			<div class="col-4">
+				<ul class="caption-container">
+					<div class="caption row template" style="display: none">
+						<p class="navigator"></p>
+						<div class='caption-text-container col'>
+							<div class='text'></div>
+						</div>
+					</div>
+				</ul>
+			</div>
+			<div class="note-box">
+				<p class="txt"></p>
+				<input type="text">
+				<button type="button" class="btn btn-secondary btn-sm edit-save float-md-right"
+					name="edit">Edit</button>
+				<button type="button" class="btn btn-secondary btn-sm delete float-md-right"
+					name="delete">Delete</button>
+			</div>
+		</div>
+		<!-- <div class="row">
+			<button class="btn btn-primary" id='next-course'>Generate my notes>></button>
+		</div> -->
+	</div>
+	<div id="note-controls" class="note-controls">
+		<div class="row">
+			<div class="col">
+				<button class="btn btn-highlight"><img src="./image/highlight.png"></button>
+				<p>Highlight</p>
+			</div>
+			<div class="col">
+				<button class="btn btn-note"><img src="./image/note.png"></button>
+				<p>Notes</p>
+			</div>
+			<div class="col">
+				<button class="btn btn-question"><img src="./image/question.png"></button>
+				<p>Question</p>
+			</div>
+		</div>
+	</div>
+	<!-- The Note Modal -->
+	<div class="modal fade" id="note-modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Take a note</h4>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="form-input-note">Your notes</label>
+							<textarea class="form-control" id="form-notes-content" rows="3"></textarea>
+						</div>
+					</form>
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close and dismiss the
+						note</button>
+					<button type="button" class="btn btn-note-save btn-primary" data-dismiss="modal">Save and continue
+						video</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- The Question Modal -->
+	<div class="modal fade" id="question-modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Write down your question</h4>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="form-input-note">Your question</label>
+							<textarea class="form-control" id="form-question-content" rows="3"
+								placeholder="I don't understand..."></textarea>
+						</div>
+					</form>
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close and dismiss the
+						question</button>
+					<button type="button" class="btn btn-question-save btn-primary" data-dismiss="modal">Save and
+						continue video</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+		integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous">
+	</script>
+	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+		integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous">
+	</script>
+	<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase.js"></script>
+	<script src="./firebase.js"></script>
+	<script src="./login.js"></script>
+	<script src="./playerControl.js"></script>
+	<script src="./pipelineControl.js"></script>
+	<script src="./noteControl.js"></script>
+	<script src="./captionControl.js"></script>
+	<script src="./log.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#alertpop").hide();
+			$("#course-title")[0].innerHTML = getVideoTitle();
+
+			var video = document.getElementById('video');
+			var source = document.createElement('source');
+			source.setAttribute("type", "video/mp4");
+			var track = document.createElement('track');
+			track.setAttribute("kind", "captions");
+			track.setAttribute("srclang", "en");
+			track.setAttribute("label", "English");
+			if (getVideoNo() == 0) {
+				source.setAttribute('src', "video/happiness/video.mp4");
+				track.setAttribute('src', "video/happiness/subtitles.vtt");
+			} else {
+				source.setAttribute('src', "video/attribution/video.mp4");
+				track.setAttribute('src', "video/attribution/subtitles.vtt");
+			}
+			video.appendChild(source);
+			video.appendChild(track);
+			video.load();
+			// video.play();
+		});
+
+		document.getElementById('next-course').addEventListener("click", function () {
+			if (noted) {
+				$("#alertpop").hide();
+				document.location = "phase2.html#" + location.hash.split("#")[1];
+			} else
+				$("#alertpop").show();
+		});
+	</script>
+</body>
+
+</html>
